@@ -66,10 +66,14 @@ class CommandLineInterface
 
  def display_concerts_for_fav_band(user_input)
     puts "That band is playing in these upcoming concerts:"
+    puts "  "
     selected_concerts = Band.find(user_input).concerts.sort
     selected_concerts.each do |concert|
       puts "#{concert.id}. #{concert.title}"
     end
+    puts "  "
+    puts "Restart Groupie if you would like to buy a ticket to"
+    puts "one of these concerts."
     separator
  end
 
