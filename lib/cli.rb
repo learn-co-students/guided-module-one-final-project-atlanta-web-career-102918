@@ -49,7 +49,7 @@ class CommandLineInterface
 
   # displays the bands for the concert that the user selected.
   def display_bands(user_input)
-    puts "Here are the Bands:"
+    puts "These bands are playing at the concert you selected:"
     selected_bands = Concert.find(user_input).bands.sort
     selected_bands.each do |band|
       puts "#{band.id}. #{band.name}"
@@ -59,12 +59,13 @@ class CommandLineInterface
 
  # asks user to select their favorite band.
  def ask_for_favorite_band
-   puts "Type the #{pastel.bright_cyan("number")} of your favorite band to see their upcoming concerts."
+   puts "Type the #{pastel.bright_cyan("number")} of your favorite band to see their"
+   puts "upcoming concerts."
    separator
  end
 
  def display_concerts_for_fav_band(user_input)
-    puts "Here are their upcoming concerts:"
+    puts "That band is playing in these upcoming concerts:"
     selected_concerts = Band.find(user_input).concerts.sort
     selected_concerts.each do |concert|
       puts "#{concert.id}. #{concert.title}"
@@ -72,8 +73,14 @@ class CommandLineInterface
     separator
  end
 
+ def buy_ticket?
+   puts "Tickets for the concert you selected cost $#{rand(100..300)}.00."
+   puts "Would you like to buy a ticket?"
+   puts "#{pastel.bright_cyan("1")} = yes, type #{pastel.bright_cyan("2")} = no"
+ end
+
  def exit
-    puts "Thank you for using our app!"
+    puts "Thank you for using Groupie!"
     separator
   end
 
@@ -90,13 +97,19 @@ class CommandLineInterface
       input = gets.chomp
       separator
       display_bands(input)
-      ask_for_favorite_band
+      buy_ticket?
+      separator
       input = gets.chomp
       separator
-      display_concerts_for_fav_band(input)
-      # if user typed "exit," then they exit the program.
-    else
-      exit
+      if input == "1"
+        puts "Your mobile ticket will arrive soon."
+      else
+        ask_for_favorite_band
+        input = gets.chomp
+        separator
+        display_concerts_for_fav_band(input)
+      end
     end
+    exit
   end
 end
